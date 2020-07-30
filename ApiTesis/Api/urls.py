@@ -7,8 +7,10 @@ from rest_framework import routers
 
 
 router = routers.SimpleRouter()
-router.register('listar_usuarios',listar_usuarios)
-router.register('acceso_usuario',acceso_usuario)
+router.register('Listar_usuarios',Listar_usuarios)
+router.register('Acceso_usuario',Acceso_usuario)
+router.register('Contacto_confianza',Contacto_confianza)
+router.register('Historial_usuario',Historial_usuario)
 
 urlpatterns = [
 	path('Listar_persona/',Listar_persona.as_view(),name='Listar_persona'),

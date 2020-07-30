@@ -36,7 +36,7 @@ class Usuario(models.Model):
 
 class Historial_Usuario(models.Model):
     idHistoUsuario = models.AutoField(primary_key=True)
-    idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name="hist_usuario")
     lat = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=6)
     lon = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=6)
     fecha = models.DateTimeField(default=datetime.utcnow)
@@ -49,7 +49,7 @@ class Historial_Usuario(models.Model):
         return self.idUsuario.nombre
 
 class Acceso_Usuario(models.Model):
-    idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name="acc_usuario")
     idHistoUsuario = models.ManyToManyField(Historial_Usuario,db_table='detalle_historico_acceso')
 
     class Meta:

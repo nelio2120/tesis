@@ -22,3 +22,13 @@ class AccesoUsuarioSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Acceso_Usuario
 		fields = "__all__"
+
+class HistorialUsuarioSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Historial_Usuario
+		fields = "__all__"
+
+class ContactoConfianzaSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Contacto_confian
+		fields = "__all__"

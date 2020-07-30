@@ -13,34 +13,52 @@ from django.shortcuts import render
 # Create your views here.
 
 
-class listar_usuarios(viewsets.ModelViewSet):
+class Listar_usuarios(viewsets.ModelViewSet):
 	serializer_class = UsuarioSerializer
 	queryset = Usuario.objects.filter()
 
+class Historial_usuario(viewsets.ModelViewSet):
+	serializer_class = HistorialUsuarioSerializer
+	queryset = Historial_Usuario.objects.all()
 
-class acceso_usuario(viewsets.ModelViewSet):
+	def get_queryset(self):
+		if not self.request.query_params.get('idUsuario'):
+			queryset = Historial_Usuario.objects.all() 
+			return queryset
+		else:
+			idUsuario = self.request.query_params.get('idUsuario')
+			queryset = Historial_Usuario.objects.get(idUsuario=idUsuario)
+			return queryset
+
+class Contacto_confianza(viewsets.ModelViewSet):
+	serializer_class = ContactoConfianzaSerializer
+	queryset = Contacto_confian.objects.all()
+
+
+class Acceso_usuario(viewsets.ModelViewSet):
 	serializer_class = AccesoUsuarioSerializer
 	queryset = Acceso_Usuario.objects.filter()
 
 	def get_queryset(self):
-		if not self.request.query_params.get('id_usuario'):
+		if not self.request.query_params.get('idUsuario'):
 			queryset = Acceso_Usuario.objects.all()
 			return queryset
 		else:
-			id_usuario = self.request.query_params.get('id_usuario')
+			id_usuario = self.request.query_params.get('idUsuario')
 			queryset = Acceso_Usuario.objects.filter(idUsuario=id_usuario)
 			return queryset
+
 
 
 class Listar_persona(APIView):
 	
 	def get(self, request):
-	 	if not request.query_params.get('id_persona'):
+	 	if not request.query_params.get('idPersona'):
 	 		lista_personas = Persona.objects.filter(estado='A')
 	 		serializer = PersonasSerializer(lista_personas, many=True)
 	 		return Response(data=serializer.data, status=status.HTTP_200_OK)
 	 	else:
-	 		persona = Persona.objects.get(idPersona=request.query_params.get('id_persona'))
+	 		persona = Persona.objects.get(idPersona=request.query_params.get('idPersona'))
 	 		serializer = PersonasSerializer(persona, many=False)
 	 		return Response(data=serializer.data, status=status.HTTP_200_OK)
 	
@@ -63,6 +81,8 @@ class Listar_persona(APIView):
 		    serializer.save()
 		    return Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 	def delete(self, request):
 		persona = Persona.objects.get(idPersona=request.query_params.get('idPersona'))
 		persona.delete()
