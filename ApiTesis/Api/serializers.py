@@ -5,7 +5,7 @@ from .models import *
 class PersonasSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Persona
-		fiels = "__all__"
+		fields = '__all__'
 		
 class UsuarioSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -21,4 +21,4 @@ class HistorialUsuarioSerializer(serializers.ModelSerializer):
 class AccesoUsuarioSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Acceso_Usuario
-		fiels = "__all__"
+		fields = "__all__"
