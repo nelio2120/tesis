@@ -7,10 +7,10 @@ ESTADO = [
 ]
 class Persona(models.Model):
     idPersona = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50,blank=True)
-    apellido = models.CharField(max_length=50,blank=True)
-    cedula = models.CharField(max_length=50,blank=True)
-    fecha_nacimiento = models.DateField(max_length=45,blank=True)
+    nombre = models.CharField(max_length=50,blank=True,null=True)
+    apellido = models.CharField(max_length=50,blank=True,null=True)
+    cedula = models.CharField(max_length=50,blank=True,null=True)
+    fecha_nacimiento = models.DateField(max_length=45,blank=True,null=True)
     estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
 
     class Meta:
@@ -30,14 +30,15 @@ class Usuario(models.Model):
     class Meta:
         verbose_name = 'Usuario'
         db_table = 'conf_usuario'
+        
     def __str__(self):
         return self.nombre
 
 class Historial_Usuario(models.Model):
     idHistoUsuario = models.AutoField(primary_key=True)
     idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
-    lat = models.DecimalField(max_digits=9,blank=True,decimal_places=6)
-    lon = models.DecimalField(max_digits=9,blank=True,decimal_places=6)
+    lat = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=6)
+    lon = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=6)
     fecha = models.DateTimeField(default=datetime.utcnow)
     estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
 

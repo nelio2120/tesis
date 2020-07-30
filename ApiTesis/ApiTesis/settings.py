@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Api'
+    'Api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ DATABASES = {
         'ENGINE': 'mysql_cymysql',
         'NAME': 'tesis2',
         'USER': 'root',
-        'PASSWORD': 'password',
+        'PASSWORD': 'root12345',
         'HOST': 'localhost',
         'PORT': 3306,
     }
