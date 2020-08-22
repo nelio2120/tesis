@@ -13,9 +13,9 @@ from django.shortcuts import render
 # Create your views here.
 
 
-class Listar_usuarios(viewsets.ModelViewSet):
-	serializer_class = UsuarioSerializer
-	queryset = Usuario.objects.filter()
+class Listar_roles(viewsets.ModelViewSet):
+	serializer_class = RolesSerializer
+	queryset = Roles.objects.filter()
 
 class Historial_usuario(viewsets.ModelViewSet):
 	serializer_class = HistorialUsuarioSerializer
@@ -49,6 +49,35 @@ class Acceso_usuario(viewsets.ModelViewSet):
 			return queryset
 
 
+class Listar_Usuario(APIView):
+	def get(self, request, *args, **kwargs):
+		if not request.query_params.get('usuario') and not request.query_params.get('password'):
+			lista_usuario = Usuario.objects.filter(estado='A')
+			serializer = UsuarioSerializer(lista_usuario,many=True)
+			return Response(data=serializer.data, status=status.HTTP_200_OK)
+		else:
+			lista_usuario = Usuario.objects.filter(estado='A',nombre=request.query_params.get('usuario'),password=request.query_params.get('password'))
+			serializer = UsuarioSerializer(lista_usuario,many=True)
+			return Response(data=serializer.data, status=status.HTTP_200_OK)
+	
+	def post(self, request):
+	 	serializer = UsuarioSerializer(data=request.data)
+	 	try:
+	 		if serializer.is_valid():
+	 			serializer.save()
+	 			return Response(data=serializer.data, status=status.HTTP_200_OK)
+	 		else:
+	 			return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	 	except Exception as e:
+	 		print(e)
+	 		return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
+	def put(self, request):
+		persona = Usuario.objects.get(idUsuario=request.data['idUsuario'])
+		serializer = UsuarioSerializer(persona, data=request.data)
+		if serializer.is_valid():
+		    serializer.save()
+		    return Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Listar_persona(APIView):
 	

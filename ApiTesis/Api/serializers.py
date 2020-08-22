@@ -6,11 +6,16 @@ class PersonasSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Persona
 		fields = '__all__'
+
+class RolesSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Roles
+		fields = '__all__'
 		
 class UsuarioSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Usuario
-		fields = ('idUsuario','nombre','correo','idPersona','correo')
+		fields = "__all__"
 
 class HistorialUsuarioSerializer(serializers.ModelSerializer):
 	class Meta:

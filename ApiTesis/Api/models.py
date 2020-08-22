@@ -18,13 +18,21 @@ class Persona(models.Model):
         db_table = 'mant_persona'
     def __str__(self):
         return self.nombre
-
+class Roles(models.Model):
+    nombre = models.CharField(max_length=50,blank=True,null=True)
+    estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
+    class Meta:
+        verbose_name = 'Rol'
+        db_table = "conf_rol"
+    def __str__(self):
+        return self.nombre
 class Usuario(models.Model):
     idUsuario = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50,blank=True,unique=True)
     correo = models.CharField(max_length=50,blank=True,unique=True)
     password = models.CharField(max_length=50,blank=True)
     idPersona = models.ForeignKey(Persona,on_delete=models.CASCADE)
+    idRol = models.ForeignKey(Roles,on_delete=models.CASCADE,default=1)
     estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
 
     class Meta:
@@ -33,6 +41,8 @@ class Usuario(models.Model):
         
     def __str__(self):
         return self.nombre
+
+
 
 class Historial_Usuario(models.Model):
     idHistoUsuario = models.AutoField(primary_key=True)

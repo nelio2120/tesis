@@ -25,7 +25,7 @@ SECRET_KEY = 'rlh$g4eg_@+m_i5(#3ktpn-+5%p@@w333iu3)h7-*o19r7_@^u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'mysql_cymysql',
         'NAME': 'tesis2',
         'USER': 'root',
-        'PASSWORD': 'root12345',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': 3306,
     }
