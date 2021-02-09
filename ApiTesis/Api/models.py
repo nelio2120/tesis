@@ -5,19 +5,8 @@ ESTADO = [
     ('A','ACTIVO')
     ,('I','INACTIVO')
 ]
-class Persona(models.Model):
-    idPersona = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50,blank=True,null=True)
-    apellido = models.CharField(max_length=50,blank=True,null=True)
-    cedula = models.CharField(max_length=50,blank=True,null=True)
-    fecha_nacimiento = models.DateField(max_length=45,blank=True,null=True)
-    estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
 
-    class Meta:
-        verbose_name = 'Persona'
-        db_table = 'mant_persona'
-    def __str__(self):
-        return self.nombre
+
 class Roles(models.Model):
     nombre = models.CharField(max_length=50,blank=True,null=True)
     estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
@@ -26,13 +15,17 @@ class Roles(models.Model):
         db_table = "conf_rol"
     def __str__(self):
         return self.nombre
+
 class Usuario(models.Model):
     idUsuario = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50,blank=True,unique=True)
+    nombre = models.CharField(max_length=50,blank=True,null=True,unique=True)
     correo = models.CharField(max_length=50,blank=True,unique=True)
     password = models.CharField(max_length=50,blank=True)
-    idPersona = models.ForeignKey(Persona,on_delete=models.CASCADE)
     idRol = models.ForeignKey(Roles,on_delete=models.CASCADE,default=1)
+    nombreUsuario = models.CharField(max_length=50,blank=True,null=True)
+    apellido = models.CharField(max_length=50,blank=True,null=True)
+    cedula = models.CharField(max_length=50,blank=True,null=True)
+    fecha_nacimiento = models.DateField(max_length=45,blank=True,null=True)
     estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
 
     class Meta:
@@ -47,8 +40,8 @@ class Usuario(models.Model):
 class Historial_Usuario(models.Model):
     idHistoUsuario = models.AutoField(primary_key=True)
     idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name="hist_usuario")
-    lat = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=6)
-    lon = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=6)
+    lat = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=7)
+    lon = models.DecimalField(blank=True,null=True,max_digits=9, decimal_places=7)
     fecha = models.DateTimeField(default=datetime.utcnow)
     estado = models.CharField(max_length=50,blank=True,choices=ESTADO,default='A')
 
@@ -60,7 +53,7 @@ class Historial_Usuario(models.Model):
 
 class Acceso_Usuario(models.Model):
     idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name="acc_usuario")
-    idHistoUsuario = models.ManyToManyField(Historial_Usuario,db_table='detalle_historico_acceso')
+    idHistoUsuario = models.ManyToManyField(Usuario,db_table='detalle_acceso_usuario')
 
     class Meta:
         verbose_name = 'Acceso_Usuario'
@@ -69,7 +62,7 @@ class Acceso_Usuario(models.Model):
         return self.idUsuario.nombre
 
 class Contacto_confian(models.Model):
-    idPersona = models.ManyToManyField(Persona,db_table='detalle_persona_confi')
+    idUsuario = models.ManyToManyField(Usuario,db_table='detalle_usuario_confi')
     contacto_1 = models.CharField(max_length=50,blank=True)
     contacto_2 = models.CharField(max_length=50,blank=True)
 
